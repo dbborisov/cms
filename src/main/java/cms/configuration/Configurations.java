@@ -1,5 +1,6 @@
 package cms.configuration;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -12,7 +13,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class Configurations {
-    private  ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Bean
     public ModelMapper modelMapper(){
