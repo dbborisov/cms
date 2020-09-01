@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class CertificateDAO {
+    private Long id;
     private String file_name;
     private String sn;
-    private LocalDateTime valide_from;
-    private LocalDateTime valide_to;
+    private LocalDateTime valid_from;
+    private LocalDateTime valid_to;
     private String issuer;
     private String issuer_cn;
     private String subject;
