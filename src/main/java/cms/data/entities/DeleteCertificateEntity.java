@@ -10,15 +10,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "certificates")
-public class CertificateEntity extends BaseEntity {
+@Table(name = "deleted_certificates")
+public class DeleteCertificateEntity extends BaseEntity {
 
     @Column(name = "file_name",nullable = false)
     private String file_name;
@@ -46,6 +45,8 @@ public class CertificateEntity extends BaseEntity {
     private String description;
     @Column(name = "updated")
     private boolean updated;
+    @Column(name = "deleted_by")
+    private String deleted;
 
 
 
