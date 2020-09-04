@@ -93,11 +93,10 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
 
-    public CertificateEntity certReader(MultipartFile cer){
+    private CertificateEntity certReader(MultipartFile cer){
         CertificateEntity dbFile = new CertificateEntity();
-        CertificateFactory fac = null;
         try {
-            fac = CertificateFactory.getInstance("X509");
+            CertificateFactory fac = CertificateFactory.getInstance("X509");
             InputStream is = cer.getInputStream();
             X509Certificate cert = (X509Certificate) fac.generateCertificate(is);
 
@@ -111,12 +110,10 @@ public class CertificateServiceImpl implements CertificateService {
            dbFile.setSn( cert.getSerialNumber().toString());
            dbFile.setValid_from(cert.getNotBefore());
            dbFile.setValid_to(cert.getNotAfter());
-           dbFile.setCertificate(cer.getBytes());
-
-
-        } catch (CertificateException | FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+//           dbFile.setCertificate(cer.getBytes());
+            dbFile.setCertificate(cert.getEncoded());
+            is.close();
+        } catch (CertificateException | IOException e) {
             e.printStackTrace();
         }
 
