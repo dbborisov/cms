@@ -112,6 +112,8 @@ public class CertificateServiceImpl implements CertificateService {
            dbFile.setValid_to(cert.getNotAfter());
 //           dbFile.setCertificate(cer.getBytes());
             dbFile.setCertificate(cert.getEncoded());
+            dbFile.setContacts(Arrays.stream(cert.getSubjectDN().toString().split(",")).filter(e->e.split("=")[0].contains("EMAILADDRESS"))
+                    .collect(Collectors.joining()).replace("EMAILADDRESS=",""));
             is.close();
         } catch (CertificateException | IOException e) {
             e.printStackTrace();
