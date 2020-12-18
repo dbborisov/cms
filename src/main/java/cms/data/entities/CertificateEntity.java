@@ -50,6 +50,8 @@ public class CertificateEntity extends BaseEntity {
     private String  importance;
     @Column(name = "used_for")
     private String used_for;
+    @Column(name = "certificate_owner")
+    private String certificate_owner;
 
 
 
