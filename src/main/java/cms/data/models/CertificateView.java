@@ -24,4 +24,6 @@ public class CertificateView {
     private MultipartFile certificate;
     private String contacts;
     private String description;
+    private String  importance;
+    private String used_for;
 }

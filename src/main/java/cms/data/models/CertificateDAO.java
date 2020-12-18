@@ -24,4 +24,6 @@ public class CertificateDAO {
     private byte[] certificate;
     private String contacts;
     private String description;
+    private String  importance;
+    private String used_for;
 }

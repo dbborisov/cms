@@ -46,6 +46,10 @@ public class CertificateEntity extends BaseEntity {
     private String description;
     @Column(name = "updated")
     private boolean updated;
+    @Column(name = "importance")
+    private String  importance;
+    @Column(name = "used_for")
+    private String used_for;
 
 
 
