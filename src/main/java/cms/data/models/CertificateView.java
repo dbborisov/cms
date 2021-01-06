@@ -27,4 +27,5 @@ public class CertificateView {
     private String  importance;
     private String used_for;
     private String certificate_owner;
+    private String responsible_for_implementation;
 }

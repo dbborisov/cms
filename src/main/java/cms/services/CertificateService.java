@@ -14,5 +14,6 @@ public interface CertificateService {
     CertificateDAO update(CertificateDAO cer);
     boolean deleteById (Long id);
     CertificateDAO save(CertificateView cer);
+    CertificateDAO viewAdd(CertificateView cer);
 
 }

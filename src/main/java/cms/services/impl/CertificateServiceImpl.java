@@ -1,10 +1,12 @@
 package cms.services.impl;
 
 import cms.data.entities.CertificateEntity;
+import cms.data.entities.CertificateViewEntity;
 import cms.data.entities.DeleteCertificateEntity;
 import cms.data.models.CertificateDAO;
 import cms.data.models.CertificateView;
 import cms.data.repositories.CertificateRepository;
+import cms.data.repositories.CertificateViewRepository;
 import cms.data.repositories.DeletedCertificateRepository;
 import cms.services.CertificateService;
 import org.modelmapper.ModelMapper;
@@ -14,13 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,11 +33,13 @@ public class CertificateServiceImpl implements CertificateService {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private final CertificateRepository certificateRepository;
+    private final CertificateViewRepository certificateViewRepository;
     private final ModelMapper modelMapper;
     private final DeletedCertificateRepository deletedCertificateRepository;
 
-    public CertificateServiceImpl(CertificateRepository certificateRepository, ModelMapper modelMapper, DeletedCertificateRepository deletedCertificateRepository) {
+    public CertificateServiceImpl(CertificateRepository certificateRepository, CertificateViewRepository certificateViewRepository, ModelMapper modelMapper, DeletedCertificateRepository deletedCertificateRepository) {
         this.certificateRepository = certificateRepository;
+        this.certificateViewRepository = certificateViewRepository;
         this.modelMapper = modelMapper;
         this.deletedCertificateRepository = deletedCertificateRepository;
     }
@@ -75,6 +79,21 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public CertificateDAO save(CertificateView cer) {
+        CertificateEntity save = new CertificateEntity();
+        Optional<CertificateViewEntity> byId = this.certificateViewRepository.findById(cer.getId());
+        if(byId.isPresent()){
+            CertificateDAO fromDbView = mappfromView(modelMapper.map(byId.get(), CertificateDAO.class), cer);
+            CertificateEntity dbFile =this.modelMapper.map(mappfromView(fromDbView,cer),CertificateEntity.class);
+             save = this.certificateRepository.save(dbFile);
+        }
+
+
+
+        return this.modelMapper.map(save,CertificateDAO.class);
+    }
+
+    @Override
+    public CertificateDAO viewAdd(CertificateView cer) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(cer.getCertificate().getOriginalFilename());
 
@@ -83,8 +102,11 @@ public class CertificateServiceImpl implements CertificateService {
             throw new IllegalArgumentException("Sorry! Filename contains invalid path sequence " + fileName);
         }
 
-        CertificateEntity dbFile = certReader(cer.getCertificate());
-        this.certificateRepository.save(dbFile);
+        CertificateViewEntity dbFile = modelMapper.map(certReader(cer.getCertificate()),CertificateViewEntity.class);
+        if(new Date().compareTo(dbFile.getValid_to()) >= 0){
+            throw new IllegalArgumentException("Invalid Expiry date!!!");
+        }
+        this.certificateViewRepository.save(dbFile);
 
 //        System.out.println(cer);
 
@@ -120,5 +142,17 @@ public class CertificateServiceImpl implements CertificateService {
         }
 
         return dbFile;
+    }
+
+    private CertificateDAO mappfromView( CertificateDAO dao, CertificateView cer){
+        dao.setCertificate_owner(cer.getCertificate_owner());
+        dao.setContacts(cer.getContacts());
+        dao.setImportance(cer.getImportance());
+        dao.setDescription(cer.getDescription());
+        dao.setResponsible_for_implementation(cer.getResponsible_for_implementation());
+        dao.setUsed_for(cer.getUsed_for());
+
+        return dao;
+
     }
 }

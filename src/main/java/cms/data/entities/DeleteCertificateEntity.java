@@ -45,6 +45,14 @@ public class DeleteCertificateEntity extends BaseEntity {
     private String description;
     @Column(name = "updated")
     private boolean updated;
+    @Column(name = "importance")
+    private String  importance;
+    @Column(name = "used_for")
+    private String used_for;
+    @Column(name = "certificate_owner")
+    private String certificate_owner;
+    @Column(name = "responsible_for_implementation")
+    private String responsible_for_implementation;
     @Column(name = "deleted_by")
     private String deleted;
 

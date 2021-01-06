@@ -10,15 +10,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "certificates")
-public class CertificateEntity extends BaseEntity {
+@Table(name = "certificates_view")
+public class CertificateViewEntity extends BaseEntity {
 
     @Column(name = "file_name",nullable = false)
     private String file_name;
