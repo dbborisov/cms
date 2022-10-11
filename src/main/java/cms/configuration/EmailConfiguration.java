@@ -3,8 +3,10 @@ package cms.configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
 
 import java.util.Properties;
 
@@ -50,5 +52,12 @@ public class EmailConfiguration {
         props.put("mail.debug", "true");
 
         return mailSender;
+    }
+
+    @Bean
+    public SimpleMailMessage simpleMailMessage() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setText("This is the test email template for your email:\n%s\n");
+        return message;
     }
 }

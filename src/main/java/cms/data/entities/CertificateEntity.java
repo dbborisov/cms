@@ -35,6 +35,8 @@ public class CertificateEntity extends BaseEntity {
     private String issuer_cn;
     @Column(name = "subject",nullable = false)
     private String subject;
+    @Column(name = "subjectAlternativeName", length = 10000)
+    private String subjectAlternativeName;
     @Column(name = "subject_cn",nullable = false)
     private String subject_cn;
     @Lob

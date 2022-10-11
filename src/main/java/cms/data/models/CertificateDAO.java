@@ -20,10 +20,12 @@ public class CertificateDAO {
     private String issuer;
     private String issuer_cn;
     private String subject;
+    private String subjectAlternativeName;
     private String subject_cn;
     private byte[] certificate;
     private String contacts;
     private String description;
+    private boolean updated;
     private String  importance;
     private String used_for;
     private String certificate_owner;
